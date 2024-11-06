@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -20,10 +22,9 @@ public class Room {
     private Integer attendance;
 
     @ManyToOne
-    @JoinColumn(name = "course_fk")
+    @JoinColumn(name = "course_fk", referencedColumnName = "id")
     private Course course;
-}
 
-enum Status {
-    NONE, PUNCTUAL, LATE, ABSENT
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Attendance> attendances = new HashSet<>();
 }

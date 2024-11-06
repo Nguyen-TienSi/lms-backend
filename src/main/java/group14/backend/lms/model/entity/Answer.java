@@ -10,12 +10,14 @@ import lombok.Setter;
 @Table
 public class Answer {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String answer;
 
     @ManyToOne
-    @JoinColumn(name = "question_fk")
+    @JoinColumn(name = "question_fk", referencedColumnName = "id")
     private Question question;
+
+    private Boolean isCorrect;
 }

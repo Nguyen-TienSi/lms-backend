@@ -1,6 +1,7 @@
 package group14.backend.lms.model.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,26 +14,31 @@ import java.util.Set;
 @Table
 public class Course {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "class_fk")
+    @JoinColumn(name = "class_fk", referencedColumnName = "id")
     private Class aClass;
 
-    @OneToOne
-    @JoinColumn(name = "subject_fk")
+    @ManyToOne
+    @JoinColumn(name = "subject_fk", referencedColumnName = "id")
     private Subject subject;
 
-    @OneToOne
-    @JoinColumn(name = "teacher_fk")
+    @ManyToOne
+    @JoinColumn(name = "teacher_fk", referencedColumnName = "id")
     private Teacher teacher;
 
-    @OneToOne
-    @JoinColumn(name = "semester_fk")
+    @ManyToOne
+    @JoinColumn(name = "semester_fk", referencedColumnName = "id")
     private Semester semester;
 
-    @ManyToMany(mappedBy = "courses")
+    @ManyToMany
+    @JoinTable(
+            name = "course_student",
+            joinColumns = @JoinColumn(name = "course_fk"),
+            inverseJoinColumns = @JoinColumn(name = "student_fk")
+    )
     private Set<Student> students = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "course", orphanRemoval = true)

@@ -1,30 +1,39 @@
 package group14.backend.lms.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table
-public class Student extends Account {
-    public Student() {
-        setRole(Role.STUDENT);
+public class Student extends User {
+    public Student(Set<Role> authorities) {
+        this.authorities = authorities;
     }
 
     @OneToOne
-    @JoinColumn(name = "class_fk")
+    @JoinColumn(name = "class_fk", referencedColumnName = "id")
     private Class aClass;
 
-    @ManyToMany
-    @JoinTable(
-            name = "student_course",
-            joinColumns = @JoinColumn(name = "student_fk"),
-            inverseJoinColumns = @JoinColumn(name = "course_fk")
-    )
+//    @JsonIgnoreProperties("students")
+    @JsonIgnore
+    @ManyToMany(mappedBy = "students")
     private Set<Course> courses = new HashSet<>();
+
+//    @JsonIgnoreProperties("student")
+    @JsonIgnore
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Attendance> attendances = new HashSet<>();
+
+//    @JsonIgnoreProperties("student")
+    @JsonIgnore
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Submission> submissions = new HashSet<>();
 }

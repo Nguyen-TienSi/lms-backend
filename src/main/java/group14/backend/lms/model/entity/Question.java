@@ -13,19 +13,15 @@ import java.util.List;
 @Table
 public class Question {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String question;
 
     @ManyToOne
-    @JoinColumn(name = "assignment_fk")
+    @JoinColumn(name = "assignment_fk", referencedColumnName = "id")
     private Assignment assignment;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "question", orphanRemoval = true)
     private List<Answer> answer = new ArrayList<>();
-
-    @OneToOne
-    @JoinColumn(name = "correct_answer_fk")
-    private Answer correctAnswer;
 }

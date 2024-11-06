@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
 @Table
 public class Assignment {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -26,15 +26,22 @@ public class Assignment {
 
     private LocalDateTime endDate;
 
-    private LocalTime duration;
+    private Duration duration;
+
+    private String fileName;
+
+    private String fileType;
 
     @Lob
     private byte[] file;
 
     @ManyToOne
-    @JoinColumn(name = "course_fk")
+    @JoinColumn(name = "course_fk", referencedColumnName = "id")
     private Course course;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "assignment", orphanRemoval = true)
     private List<Question> questions = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "assignment", orphanRemoval = true)
+    private List<Submission> submissions = new ArrayList<>();
 }
