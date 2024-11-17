@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface ISubjectService {
     List<SubjectDto> getAllSubjects();
+    SubjectDto getSubjectById(long id);
     SubjectDto createSubject(SubjectDto subjectDto);
     void deleteSubject(long subjectId);
 }

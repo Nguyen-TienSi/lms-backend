@@ -29,10 +29,7 @@ public class TeacherServiceImpl implements ITeacherService {
     private final IRoleRepository roleRepository;
 
     public List<TeacherDto> getAllTeachers() {
-        List<Teacher> teachers = new ArrayList<>();
-        teacherRepository.findAll().forEach(teachers::add);
-
-        return teachers.stream()
+        return ((List<Teacher>) teacherRepository.findAll()).stream()
                 .map(TeacherDto::convertToDto)
                 .collect(Collectors.toList());
     }

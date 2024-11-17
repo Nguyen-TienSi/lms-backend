@@ -24,6 +24,11 @@ public class ClassServiceImpl implements IClassService {
     }
 
     @Override
+    public ClassDto getClassById(long id) {
+        return ClassDto.convertToDto(classRepository.findById(id).orElseThrow());
+    }
+
+    @Override
     public ClassDto addClass(ClassDto classDto) {
         if (classRepository.findByName(classDto.name()).isPresent()) {
             throw new IllegalArgumentException("Class name already exists");

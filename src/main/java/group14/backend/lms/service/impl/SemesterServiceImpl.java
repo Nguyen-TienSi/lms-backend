@@ -23,6 +23,11 @@ public class SemesterServiceImpl implements ISemesterService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public SemesterDto getSemesterById(long id) {
+        return SemesterDto.convertToDto(semesterRepository.findById(id).orElseThrow());
+    }
+
     public SemesterDto addSemester(SemesterDto semesterDto) {
         if (semesterRepository.findByName(semesterDto.name()).isPresent()) {
             throw new IllegalArgumentException("A semester with the name " + semesterDto.name() + " already exists.");

@@ -28,12 +28,7 @@ public class Assignment {
 
     private Duration duration;
 
-    private String fileName;
-
-    private String fileType;
-
-    @Lob
-    private byte[] file;
+    private String filePath;
 
     @ManyToOne
     @JoinColumn(name = "course_fk", referencedColumnName = "id")

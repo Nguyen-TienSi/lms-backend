@@ -9,6 +9,7 @@ import group14.backend.lms.repository.ICourseRepository;
 import group14.backend.lms.repository.IRoomRepository;
 import group14.backend.lms.service.IRoomService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class RoomServiceImpl implements IRoomService {
     private final IRoomRepository roomRepository;
     private final ICourseRepository courseRepository;

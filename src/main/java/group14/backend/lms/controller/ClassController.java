@@ -17,6 +17,11 @@ public class ClassController {
         return ResponseEntity.ok(classService.getAllClasses());
     }
 
+    @GetMapping("/{classId}")
+    public ResponseEntity<?> getClassById(@PathVariable int classId) {
+        return ResponseEntity.ok(classService.getClassById(classId));
+    }
+
     @PostMapping("/add")
     public ResponseEntity<?> addClass(@RequestBody ClassDto classDto) {
         return ResponseEntity.ok(classService.addClass(classDto));

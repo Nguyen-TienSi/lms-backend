@@ -17,6 +17,11 @@ public class SemesterController {
         return ResponseEntity.ok(semesterService.getAllSemesters());
     }
 
+    @GetMapping("/{semesterId}")
+    private ResponseEntity<?> getSemesterById(@PathVariable int semesterId) {
+        return ResponseEntity.ok(semesterService.getSemesterById(semesterId));
+    }
+
     @PostMapping("/add")
     private ResponseEntity<?> addSemester(@RequestBody SemesterDto semesterDto) {
         return ResponseEntity.ok(semesterService.addSemester(semesterDto));

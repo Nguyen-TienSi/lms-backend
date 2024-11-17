@@ -17,6 +17,11 @@ public class SubjectController {
         return ResponseEntity.ok(subjectService.getAllSubjects());
     }
 
+    @GetMapping("/{subjectId}")
+    public ResponseEntity<?> getSubjectById(@PathVariable int subjectId) {
+        return ResponseEntity.ok(subjectService.getSubjectById(subjectId));
+    }
+
     @PostMapping("/add")
     public ResponseEntity<?> addSubject(@RequestBody SubjectDto subjectDto) {
         return ResponseEntity.ok(subjectService.createSubject(subjectDto));

@@ -13,10 +13,8 @@ public record SubmissionDto(
         Long id,
         Long studentId,
         Long assignmentId,
-        String fileName,
-        String fileType,
         byte[] fileData,
-        List<AnswerDto> answerDtoList,
+        List<Long> answerIds,
         LocalDateTime submissionTime
 ) {
     public static SubmissionDto convertToDto(Submission submission) {
@@ -24,11 +22,9 @@ public record SubmissionDto(
                 .id(submission.getId())
                 .studentId(submission.getStudent().getId())
                 .assignmentId(submission.getAssignment().getId())
-                .fileName(submission.getFileName())
-                .fileType(submission.getFileType())
                 .fileData(submission.getFileData())
-                .answerDtoList(submission.getAnswers().stream()
-                        .map(AnswerDto::convertToDto)
+                .answerIds(submission.getAnswers().stream()
+                        .map(Answer::getId)
                         .collect(Collectors.toList()))
                 .submissionTime(submission.getSubmissionTime())
                 .build();

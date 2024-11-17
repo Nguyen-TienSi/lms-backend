@@ -18,7 +18,7 @@ public class Student extends User {
         this.authorities = authorities;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "class_fk", referencedColumnName = "id")
     private Class aClass;
 

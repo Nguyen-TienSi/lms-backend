@@ -1,7 +1,6 @@
 package group14.backend.lms.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

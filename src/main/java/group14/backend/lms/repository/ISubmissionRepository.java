@@ -8,4 +8,5 @@ import java.util.List;
 public interface ISubmissionRepository extends CrudRepository<Submission, Long> {
     List<Submission> findSubmissionsByAssignmentId(Long assignmentId);
     List<Submission> findSubmissionsByStudentId(Long studentId);
+    Submission findSubmissionsByAssignmentIdAndStudentId(Long assignmentId, Long studentId);
 }

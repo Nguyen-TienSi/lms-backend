@@ -4,6 +4,7 @@ import group14.backend.lms.model.entity.Student;
 import group14.backend.lms.model.entity.Teacher;
 import group14.backend.lms.model.entity.User;
 import group14.backend.lms.repository.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CustomUserDetailsService implements UserDetailsService {
     private final IUserRepository userRepository;
     private final ITeacherRepository teacherRepository;

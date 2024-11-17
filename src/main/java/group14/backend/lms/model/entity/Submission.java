@@ -19,18 +19,14 @@ public class Submission {
 
     @ManyToOne
     @JoinColumn(name = "student_fk", referencedColumnName = "id")
-    private Student student;  // Sinh viên nộp bài
+    private Student student;
 
     @ManyToOne
     @JoinColumn(name = "assignment_fk", referencedColumnName = "id")
-    private Assignment assignment;  // Bài tập mà sinh viên nộp bài
-
-    private String fileName;  // Tên file mà sinh viên nộp
-
-    private String fileType;  // Loại file (ví dụ: pdf, docx)
+    private Assignment assignment;
 
     @Lob
-    private byte[] fileData;  // Dữ liệu file dưới dạng byte[]
+    private byte[] fileData;
 
     @ManyToMany
     @JoinTable(

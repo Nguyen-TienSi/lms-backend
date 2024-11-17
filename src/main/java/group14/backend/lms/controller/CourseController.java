@@ -1,9 +1,14 @@
 package group14.backend.lms.controller;
 
 import group14.backend.lms.model.dto.CourseDto;
+import group14.backend.lms.model.entity.User;
 import group14.backend.lms.service.ICourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,14 +27,13 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getCourseById(courseId));
     }
 
-    @GetMapping("/teacher/{teacherId}")
-    public ResponseEntity<?> getCourseByTeacherId(@PathVariable int teacherId) {
-        return ResponseEntity.ok(courseService.getCourseByTeacherId(teacherId));
-    }
-
-    @GetMapping("/student/{studentId}")
-    public ResponseEntity<?> getCourseByStudentId(@PathVariable int studentId) {
-        return ResponseEntity.ok(courseService.getCourseByStudentId(studentId));
+    @GetMapping("/user")
+    public ResponseEntity<?> getCourseByUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof User user) {
+            return ResponseEntity.ok(courseService.getCourseByUserId(user.getId()));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @PostMapping("/add")
@@ -38,7 +42,7 @@ public class CourseController {
     }
 
     @PutMapping("update/{courseId}")
-    public ResponseEntity<?> updateCourse(@RequestBody CourseDto courseDto, @PathVariable int courseId) {
+    public ResponseEntity<?> updateCourse(@PathVariable int courseId, @RequestBody CourseDto courseDto) {
         return ResponseEntity.ok(courseService.updateCourse(courseId, courseDto));
     }
 

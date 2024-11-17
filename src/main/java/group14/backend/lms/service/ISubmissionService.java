@@ -7,5 +7,6 @@ import java.util.List;
 public interface ISubmissionService {
     List<SubmissionDto> getSubmissionsByAssignmentId(long assignmentId);
     List<SubmissionDto> getSubmissionByStudentId(long studentId);
-    SubmissionDto createSubmission(SubmissionDto submission);
+    SubmissionDto getSubmissionByAssignmentIdAndStudentId(long assignmentId, long studentId);
+    SubmissionDto createSubmission(SubmissionDto submissionDto);
 }

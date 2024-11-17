@@ -44,17 +44,8 @@ public class CourseServiceImpl implements ICourseService {
     }
 
     @Override
-    public List<CourseDto> getCourseByTeacherId(long id) {
-        List<Course> courseList = courseRepository.findCoursesByTeacherId(id);
-        return courseList.stream()
-                .map(CourseDto::convertToDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<CourseDto> getCourseByStudentId(long id) {
-        List<Course> courseList = courseRepository.findCoursesByStudentId(id);
-        return courseList.stream()
+    public List<CourseDto> getCourseByUserId(long id) {
+        return courseRepository.findCoursesByUserId(id).stream()
                 .map(CourseDto::convertToDto)
                 .collect(Collectors.toList());
     }
@@ -69,18 +60,11 @@ public class CourseServiceImpl implements ICourseService {
         course.setTeacher(teacher);
 
         Set<Student> students = new HashSet<>((Collection<Student>) studentRepository.findAllById(courseDto.studentIds()));
-        students.forEach(student -> student.getCourses().add(course)); // Add course to each student
+        students.forEach(student -> student.getCourses().add(course));
         course.setStudents(students);
-
-        course.getRooms().addAll((Collection<? extends Room>) roomRepository.findAllById(courseDto.roomIds()));
-        course.getAssignments().addAll((Collection<? extends Assignment>) assignmentRepository.findAllById(courseDto.assignmentIds()));
-
         teacher.getCourses().add(course);
 
-        Course savedCourse = courseRepository.save(course);
-        teacherRepository.save(teacher); //This is necessary to persist the bidirectional relationship
-
-        return CourseDto.convertToDto(savedCourse);
+        return CourseDto.convertToDto(courseRepository.save(course));
     }
 
     @Override

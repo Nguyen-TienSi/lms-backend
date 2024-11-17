@@ -7,7 +7,6 @@ import lombok.Builder;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,11 +18,10 @@ public record AssignmentDto(
         LocalDateTime startDate,
         LocalDateTime endDate,
         Duration duration,
-        String fileName,
-        String fileType,
-        byte[] file,
+//        byte[] file,
+        String filePath,
         Long courseId,
-        List<Long> questionIds,
+        List<QuestionDto> questions,
         List<Long> submissionIds
 ) {
     public static AssignmentDto convertToDto(Assignment assignment) {
@@ -33,14 +31,12 @@ public record AssignmentDto(
                 .description(assignment.getDescription())
                 .startDate(assignment.getStartDate())
                 .endDate(assignment.getEndDate())
-                .duration(Duration.between(assignment.getStartDate(), assignment.getEndDate()))
-                .fileName(assignment.getFileName())
-                .fileType(assignment.getFileType())
-                .file(assignment.getFile())
+                .duration(assignment.getDuration())
+                .filePath(assignment.getFilePath())
                 .courseId(assignment.getCourse().getId())
-                .questionIds(assignment.getQuestions().stream()
-                        .map(Question::getId)
-                        .toList())
+                .questions(assignment.getQuestions().stream()
+                        .map(QuestionDto::convertToDto)
+                        .collect(Collectors.toList()))
                 .submissionIds(assignment.getSubmissions().stream()
                         .map(Submission::getId)
                         .collect(Collectors.toList()))

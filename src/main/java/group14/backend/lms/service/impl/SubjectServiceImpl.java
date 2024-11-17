@@ -32,6 +32,11 @@ public class SubjectServiceImpl implements ISubjectService {
     }
 
     @Override
+    public SubjectDto getSubjectById(long id) {
+        return SubjectDto.convertToDto(subjectRepository.findById(id).orElseThrow());
+    }
+
+    @Override
     public SubjectDto createSubject(SubjectDto subjectDto) {
         Subject subject = new Subject();
         subject.setName(subjectDto.name());

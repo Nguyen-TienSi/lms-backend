@@ -25,10 +25,7 @@ public class StudentServiceImpl implements IStudentService {
     private final PasswordEncoder passwordEncoder;
 
     public List<StudentDto> getAllStudents() {
-        List<Student> students = new ArrayList<>();
-        studentRepository.findAll().forEach(students::add);
-
-        return students.stream()
+        return ((List<Student>) studentRepository.findAll()).stream()
                 .map(StudentDto::convertToDto)
                 .collect(Collectors.toList());
     }
