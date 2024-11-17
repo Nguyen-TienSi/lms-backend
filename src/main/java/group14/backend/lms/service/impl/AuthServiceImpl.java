@@ -30,10 +30,10 @@ import java.util.Set;
 @Transactional
 @RequiredArgsConstructor
 public class AuthServiceImpl implements IAuthService {
-    private final IUserRepository _userRepository;
-    private final IRoleRepository _roleRepository;
-    private final PasswordEncoder _passwordEncoder;
-    private final AuthenticationManager _authenticationManager;
+    private final IUserRepository userRepository;
+    private final IRoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
     @Override
     public LoginResponseDto login(LoginRequestDto loginRequestDto) {
@@ -42,12 +42,18 @@ public class AuthServiceImpl implements IAuthService {
         }
 
         try {
-            Authentication authentication = _authenticationManager.authenticate(
+            Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequestDto.username(), loginRequestDto.password())
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            User user = (User) authentication.getPrincipal();
-            String role = user != null ? user.getAuthorities().stream().findFirst().map(GrantedAuthority::getAuthority).orElse(null) : null;
+            String role = "";
+            if (authentication.getPrincipal() instanceof User user) {
+                role = user.getAuthorities()
+                        .stream()
+                        .findFirst()
+                        .map(GrantedAuthority::getAuthority)
+                        .orElseThrow();
+            }
             return new LoginResponseDto(Status.AUTHENTICATED.name(), "Login successful", role);
         } catch (BadCredentialsException e) {
             return new LoginResponseDto(Status.UNAUTHENTICATED.name(), "Incorrect username or password", null);
@@ -58,12 +64,9 @@ public class AuthServiceImpl implements IAuthService {
 
     @Override
     public UserDto register(UserRegistrationDto registrationDto) {
-        User user = _userRepository.findByUsername(registrationDto.username()).orElse(null);
-        if (user != null) {
-            throw new RuntimeException("Username already in use");
-        }
+        User user = userRepository.findByUsername(registrationDto.username()).orElseThrow();
 
-        Role role = _roleRepository.findByAuthority(registrationDto.authority()).orElseThrow(() -> new RuntimeException("Role not found"));
+        Role role = roleRepository.findByAuthority(registrationDto.authority()).orElseThrow();
         Set<Role> roles = new HashSet<>();
         roles.add(role);
 
@@ -73,16 +76,15 @@ public class AuthServiceImpl implements IAuthService {
             user = new Student();
         }
 
-        assert user != null;
         user.setFirstName(registrationDto.firstName());
         user.setLastName(registrationDto.lastName());
         user.setGender(registrationDto.gender());
         user.setBirthDate(registrationDto.birthDate());
         user.setPhone(registrationDto.phone());
         user.setUsername(registrationDto.username());
-        user.setPassword(_passwordEncoder.encode(registrationDto.password()));
+        user.setPassword(passwordEncoder.encode(registrationDto.password()));
         user.setAuthorities(roles);
 
-        return UserDto.convertToDto(_userRepository.save(user));
+        return UserDto.convertToDto(userRepository.save(user));
     }
 }

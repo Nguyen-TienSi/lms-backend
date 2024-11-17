@@ -27,14 +27,16 @@ public class SubmissionServiceImpl implements ISubmissionService {
 
     @Override
     public List<SubmissionDto> getSubmissionsByAssignmentId(long assignmentId) {
-        return submissionRepository.findSubmissionsByAssignmentId(assignmentId).stream()
+        return submissionRepository.findSubmissionsByAssignmentId(assignmentId)
+                .stream()
                 .map(SubmissionDto::convertToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<SubmissionDto> getSubmissionByStudentId(long studentId) {
-        return submissionRepository.findSubmissionsByStudentId(studentId).stream()
+        return submissionRepository.findSubmissionsByStudentId(studentId)
+                .stream()
                 .map(SubmissionDto::convertToDto)
                 .collect(Collectors.toList());
     }

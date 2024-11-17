@@ -26,29 +26,25 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
+        return userRepository.findByUsername(username).orElseThrow();
     }
 
     public void deleteUser(long id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            User u = user.get();
-            if (u instanceof Teacher teacher) {
-                teacher.getSubjects().forEach(subject -> {
-                    subject.getTeachers().remove(teacher);
-                    subjectRepository.save(subject);
-                });
-                teacherRepository.delete(teacher);
-            } else if (u instanceof Student student) {
-                student.getCourses().forEach(course -> {
-                    course.getStudents().remove(student);
-                    courseRepository.save(course);
-                });
-                student.getAttendances().clear();
-                student.getSubmissions().clear();
-                studentRepository.delete(student);
-            }
+        User user = userRepository.findById(id).orElseThrow();
+        if (user instanceof Teacher teacher) {
+            teacher.getSubjects().forEach(subject -> {
+                subject.getTeachers().remove(teacher);
+                subjectRepository.save(subject);
+            });
+            teacherRepository.delete(teacher);
+        } else if (user instanceof Student student) {
+            student.getCourses().forEach(course -> {
+                course.getStudents().remove(student);
+                courseRepository.save(course);
+            });
+            student.getAttendances().clear();
+            student.getSubmissions().clear();
+            studentRepository.delete(student);
         }
     }
 }

@@ -8,7 +8,6 @@ import group14.backend.lms.repository.ITeacherRepository;
 import group14.backend.lms.service.ISubjectService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -52,7 +51,6 @@ public class SubjectServiceImpl implements ISubjectService {
 
     @Override
     public void deleteSubject(long subjectId) {
-        subjectRepository.findById(subjectId)
-                .ifPresent(subjectRepository::delete);
+        subjectRepository.findById(subjectId).ifPresent(subjectRepository::delete);
     }
 }

@@ -1,6 +1,5 @@
 package group14.backend.lms.service.impl;
 
-import group14.backend.lms.model.dto.AnswerDto;
 import group14.backend.lms.model.entity.Answer;
 import group14.backend.lms.model.entity.Question;
 import group14.backend.lms.model.dto.QuestionDto;
@@ -13,10 +12,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,7 +25,8 @@ public class QuestionServiceImpl implements IQuestionService {
 
     @Override
     public List<QuestionDto> getQuestionsByAssignmentId(long assignmentId) {
-        return questionRepository.findQuestionsByAssignmentId(assignmentId).stream()
+        return questionRepository.findQuestionsByAssignmentId(assignmentId)
+                .stream()
                 .map(QuestionDto::convertToDto)
                 .collect(Collectors.toList());
     }
@@ -39,14 +36,12 @@ public class QuestionServiceImpl implements IQuestionService {
         Question question = new Question();
         question.setQuestion(questionDto.question());
         question.setAssignment(assignmentRepository.findById(questionDto.assignmentId()).orElseThrow());
-
-        // Create answers and set the questionId
-        List<Answer> answers = questionDto.answerDtoList().stream()
+        List<Answer> answers = questionDto.answerDtoList()
+                .stream()
                 .map(answerDto -> {
                     Answer answer = new Answer();
                     answer.setAnswer(answerDto.answer());
-                    //Crucial change: set the question ID here
-                    answer.setQuestion(question); //This sets the association to the question
+                    answer.setQuestion(question);
                     answer.setIsCorrect(answerDto.isCorrect());
                     return answer;
                 })
@@ -59,8 +54,7 @@ public class QuestionServiceImpl implements IQuestionService {
 
     @Override
     public QuestionDto updateQuestion(long questionId, QuestionDto questionDto) {
-        Question question = questionRepository.findById(questionId)
-                .orElseThrow(() -> new EntityNotFoundException("Question not found"));
+        Question question = questionRepository.findById(questionId).orElseThrow();
 
         // TODO update question
         return QuestionDto.convertToDto(questionRepository.save(question));
@@ -68,7 +62,6 @@ public class QuestionServiceImpl implements IQuestionService {
 
     @Override
     public void deleteQuestion(long questionId) {
-        Question question = questionRepository.findById(questionId).orElseThrow();
-        questionRepository.delete(question);
+        questionRepository.findById(questionId).ifPresent(questionRepository::delete);
     }
 }

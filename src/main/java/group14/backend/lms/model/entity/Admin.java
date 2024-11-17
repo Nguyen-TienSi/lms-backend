@@ -9,8 +9,4 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table
-public class Admin extends User {
-    public Admin(Set<Role> authorities) {
-        this.authorities = authorities;
-    }
-}
+public class Admin extends User {}

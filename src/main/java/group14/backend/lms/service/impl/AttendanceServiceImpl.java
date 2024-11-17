@@ -30,8 +30,8 @@ public class AttendanceServiceImpl implements IAttendanceService {
 
     @Override
     public List<AttendanceDto> getAttendanceByRoomId(long roomId) {
-        List<Attendance> attendanceList = attendanceRepository.findAttendanceByRoomId(roomId);
-        return attendanceList.stream()
+        return attendanceRepository.findAttendanceByRoomId(roomId)
+                .stream()
                 .map(AttendanceDto::convertToDto)
                 .collect(Collectors.toList());
     }

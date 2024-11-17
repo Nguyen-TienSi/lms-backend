@@ -14,10 +14,6 @@ import java.util.Set;
 @Entity
 @Table
 public class Student extends User {
-    public Student(Set<Role> authorities) {
-        this.authorities = authorities;
-    }
-
     @ManyToOne
     @JoinColumn(name = "class_fk", referencedColumnName = "id")
     private Class aClass;

@@ -29,7 +29,8 @@ public class TeacherServiceImpl implements ITeacherService {
     private final IRoleRepository roleRepository;
 
     public List<TeacherDto> getAllTeachers() {
-        return ((List<Teacher>) teacherRepository.findAll()).stream()
+        return ((List<Teacher>) teacherRepository.findAll())
+                .stream()
                 .map(TeacherDto::convertToDto)
                 .collect(Collectors.toList());
     }
@@ -62,7 +63,7 @@ public class TeacherServiceImpl implements ITeacherService {
     public TeacherDto getTeacherById(long id) {
         return teacherRepository.findById(id)
                 .map(TeacherDto::convertToDto)
-                .orElse(null);
+                .orElseThrow();
     }
 
     @Override

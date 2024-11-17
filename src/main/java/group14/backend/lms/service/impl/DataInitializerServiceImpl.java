@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,10 +35,22 @@ public class DataInitializerServiceImpl implements IDataInitializerService {
         createRoleIfNotExist("ROLE_TEACHER");
         createRoleIfNotExist("ROLE_ADMIN");
 
-        createUserIfNotExist("admin", "1", "admin1@gmail.com", "password", "ROLE_ADMIN");
+        createUserIfNotExist(
+                "Admin", "1",
+                "admin1@example.com",
+                "ROLE_ADMIN"
+        );
         for (int i = 1; i <= 5; i++) {
-            createUserIfNotExist("student", String.valueOf(i), "student" + i + "@gmail.com", "password", "ROLE_STUDENT");
-            createUserIfNotExist("teacher", String.valueOf(i), "teacher" + i + "@gmail.com", "password", "ROLE_TEACHER");
+            createUserIfNotExist(
+                    "Student", String.valueOf(i),
+                    "student" + i + "@example.com",
+                    "ROLE_STUDENT"
+            );
+            createUserIfNotExist(
+                    "Teacher", String.valueOf(i),
+                    "teacher" + i + "@example.com",
+                    "ROLE_TEACHER"
+            );
         }
     }
 
@@ -46,7 +59,9 @@ public class DataInitializerServiceImpl implements IDataInitializerService {
         for (int i = 1; i <= 5; i++) {
             Semester semester = new Semester();
             semester.setName("Semester " + i);
-            semesterRepository.save(semester);
+            if (semesterRepository.findByName(semester.getName()).isEmpty()) {
+                semesterRepository.save(semester);
+            }
         }
     }
 
@@ -55,7 +70,9 @@ public class DataInitializerServiceImpl implements IDataInitializerService {
         for (int i = 1; i <= 5; i++) {
             Class aClass = new Class();
             aClass.setName("Class " + i);
-            classRepository.save(aClass);
+            if (classRepository.findByName(aClass.getName()).isEmpty()) {
+                classRepository.save(aClass);
+            }
         }
     }
 
@@ -64,7 +81,9 @@ public class DataInitializerServiceImpl implements IDataInitializerService {
         for (int i = 1; i <= 5; i++) {
             Subject subject = new Subject();
             subject.setName("Subject " + i);
-            subjectRepository.save(subject);
+            if (subjectRepository.findByName(subject.getName()).isEmpty()) {
+                subjectRepository.save(subject);
+            }
         }
     }
 
@@ -75,27 +94,34 @@ public class DataInitializerServiceImpl implements IDataInitializerService {
         }
     }
 
-    private void createUserIfNotExist(String firstName, String lastName, String username, String password, String... roles) {
+    private void createUserIfNotExist(
+            String firstName, String lastName,
+            String username, String... roles
+    ) {
         if (userRepository.findByUsername(username).isEmpty()) {
             Set<Role> authorities = new HashSet<>();
             for (String roleName : roles) {
-                Role role = roleRepository.findByAuthority(roleName).orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
+                Role role = roleRepository.findByAuthority(roleName).orElseThrow();
                 authorities.add(role);
             }
 
             User user;
             if (roles.length == 1 && roles[0].equals("ROLE_STUDENT")) {
-                user = new Student(authorities);
+                user = new Student();
             } else if (roles.length == 1 && roles[0].equals("ROLE_TEACHER")) {
-                user = new Teacher(authorities);
+                user = new Teacher();
             } else {
-                user = new Admin(authorities);
+                user = new Admin();
             }
 
             user.setFirstName(firstName);
             user.setLastName(lastName);
+            user.setGender(true);
+            user.setBirthDate(new Date());
+            user.setPhone("123");
             user.setUsername(username);
-            user.setPassword(passwordEncoder.encode(password));
+            user.setPassword(passwordEncoder.encode("password"));
+            user.setAuthorities(authorities);
             userRepository.save(user);
         }
     }

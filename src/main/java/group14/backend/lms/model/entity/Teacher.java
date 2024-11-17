@@ -13,10 +13,6 @@ import java.util.Set;
 @Entity
 @Table
 public class Teacher extends User {
-    public Teacher(Set<Role> authorities) {
-        this.authorities = authorities;
-    }
-
     //    @JsonIgnoreProperties("teachers")
     @JsonIgnore
     @ManyToMany(mappedBy = "teachers")

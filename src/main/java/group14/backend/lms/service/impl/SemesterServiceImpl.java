@@ -40,7 +40,6 @@ public class SemesterServiceImpl implements ISemesterService {
     }
 
     public void deleteSemester(long id) {
-        Semester semester = semesterRepository.findById(id).orElseThrow();
-        semesterRepository.delete(semester);
+        semesterRepository.findById(id).ifPresent(semesterRepository::delete);
     }
 }

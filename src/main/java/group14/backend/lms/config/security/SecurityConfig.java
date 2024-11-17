@@ -40,14 +40,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/api/auth/profile").authenticated()
-                        .requestMatchers("/api/auth/register").hasRole("ADMIN")
-                        .anyRequest().permitAll()
+//                        .requestMatchers("/api/users/login").permitAll()
+//                        .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
                 .httpBasic(withDefaults())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .logout(logout -> logout.logoutUrl("/api/auth/logout").logoutSuccessHandler(
+                .logout(logout -> logout.logoutUrl("/api/users/logout").logoutSuccessHandler(
                         (request, response, authentication) -> {
+                            request.logout();
+                            request.getSession().invalidate();
                             response.setStatus(HttpServletResponse.SC_OK);
                         }
                 ))

@@ -40,7 +40,7 @@ public class CourseServiceImpl implements ICourseService {
     public CourseDto getCourseById(long id) {
         return courseRepository.findById(id)
                 .map(CourseDto::convertToDto)
-                .orElseThrow(() -> new EntityNotFoundException("Course not found with ID: " + id));
+                .orElseThrow();
     }
 
     @Override
@@ -103,7 +103,6 @@ public class CourseServiceImpl implements ICourseService {
 
     @Override
     public void deleteCourse(long id) {
-        Course course = courseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Course not found with ID: " + id));
-        courseRepository.delete(course);
+        courseRepository.findById(id).ifPresent(courseRepository::delete);
     }
 }

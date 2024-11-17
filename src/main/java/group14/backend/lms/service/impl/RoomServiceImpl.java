@@ -37,7 +37,7 @@ public class RoomServiceImpl implements IRoomService {
     public RoomDto getRoomById(long roomId) {
         return roomRepository.findById(roomId)
                 .map(RoomDto::convertToDto)
-                .orElseThrow(() -> new EntityNotFoundException("Room not found with id: " + roomId));
+                .orElseThrow();
     }
 
     @Override
@@ -62,7 +62,6 @@ public class RoomServiceImpl implements IRoomService {
 
     @Override
     public void deleteRoomById(long roomId) {
-        Room room = roomRepository.findById(roomId).orElseThrow(() -> new EntityNotFoundException("Room not found with id: " + roomId));
-        roomRepository.delete(room);
+        roomRepository.findById(roomId).ifPresent(roomRepository::delete);
     }
 }

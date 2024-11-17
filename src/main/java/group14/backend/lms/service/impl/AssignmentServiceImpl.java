@@ -34,7 +34,8 @@ public class AssignmentServiceImpl implements IAssignmentService {
 
     @Override
     public List<AssignmentDto> getAssignmentByCourseId(long courseId) {
-        return assignmentRepository.findAssignmentsByCourseId(courseId).stream()
+        return assignmentRepository.findAssignmentsByCourseId(courseId)
+                .stream()
                 .map(AssignmentDto::convertToDto)
                 .collect(Collectors.toList());
     }
@@ -69,20 +70,24 @@ public class AssignmentServiceImpl implements IAssignmentService {
         course.getAssignments().add(assignment); // Add assignment to course
 
         if (assignmentDto.questions() != null) {
-            List<Question> questions = assignmentDto.questions().stream()
+            List<Question> questions = assignmentDto.questions()
+                    .stream()
                     .map(questionDto -> {
                         Question question = new Question();
                         question.setQuestion(questionDto.question());
                         question.setAssignment(assignment);
 
                         if (questionDto.answerDtoList() != null) {
-                            question.setAnswer(questionDto.answerDtoList().stream().map(answerDto -> {
-                                Answer answer = new Answer();
-                                answer.setAnswer(answerDto.answer());
-                                answer.setQuestion(question);
-                                answer.setIsCorrect(answerDto.isCorrect());
-                                return answer;
-                            }).collect(Collectors.toList()));
+                            question.setAnswer(questionDto.answerDtoList()
+                                    .stream()
+                                    .map(answerDto -> {
+                                        Answer answer = new Answer();
+                                        answer.setAnswer(answerDto.answer());
+                                        answer.setQuestion(question);
+                                        answer.setIsCorrect(answerDto.isCorrect());
+                                        return answer;
+                                    })
+                                    .collect(Collectors.toList()));
                         }
                         return question;
                     }).collect(Collectors.toList());
@@ -112,8 +117,6 @@ public class AssignmentServiceImpl implements IAssignmentService {
 
     @Override
     public void deleteAssignment(long id) {
-        Assignment assignment = assignmentRepository.findById(id).orElse(null);
-        assert assignment != null;
-        assignmentRepository.delete(assignment);
+        assignmentRepository.findById(id).ifPresent(assignmentRepository::delete);
     }
 }

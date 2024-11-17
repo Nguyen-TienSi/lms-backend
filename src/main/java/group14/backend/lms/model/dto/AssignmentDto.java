@@ -1,7 +1,6 @@
 package group14.backend.lms.model.dto;
 
 import group14.backend.lms.model.entity.Assignment;
-import group14.backend.lms.model.entity.Question;
 import group14.backend.lms.model.entity.Submission;
 import lombok.Builder;
 

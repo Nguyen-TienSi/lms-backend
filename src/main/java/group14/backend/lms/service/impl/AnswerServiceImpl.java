@@ -39,8 +39,6 @@ public class AnswerServiceImpl implements IAnswerService {
 
     @Override
     public void deleteAnswer(long id) {
-        Answer answer = answerRepository.findById(id).orElse(null);
-        assert answer != null;
-        answerRepository.delete(answer);
+        answerRepository.findById(id).ifPresent(answerRepository::delete);
     }
 }

@@ -41,7 +41,6 @@ public class ClassServiceImpl implements IClassService {
 
     @Override
     public void deleteClass(long classId) {
-        Class aClass = classRepository.findById(classId).orElseThrow();
-        classRepository.delete(aClass);
+        classRepository.findById(classId).ifPresent(classRepository::delete);
     }
 }
