@@ -46,7 +46,7 @@ public class TeacherServiceImpl implements ITeacherService {
         teacher.setPhone(teacherDto.userDto().phone());
         teacher.setUsername(teacherDto.userDto().username());
         teacher.setPassword(passwordEncoder.encode("password"));
-        teacher.setAuthorities(roleRepository.findByAuthority(teacherDto.userDto().role())
+        teacher.setAuthorities(roleRepository.findByAuthority("ROLE_TEACHER")
                 .stream()
                 .collect(Collectors.toSet()));
 
@@ -77,31 +77,28 @@ public class TeacherServiceImpl implements ITeacherService {
         teacher.setBirthDate(teacherDto.userDto().birthDate());
         teacher.setPhone(teacherDto.userDto().phone());
 
-        // Update subject
+        // Update subjects
         Set<Subject> currentSubjects = teacher.getSubjects();
         Set<Subject> newSubjects = new HashSet<>((Collection<Subject>) subjectRepository.findAllById(teacherDto.subjectIds()));
         currentSubjects.forEach(subject -> subject.getTeachers().remove(teacher));
         newSubjects.forEach(subject -> subject.getTeachers().add(teacher));
         teacher.setSubjects(newSubjects);
 
-        // Update courses // TODO update course bug
-//        Set<Course> coursesToRemove = new HashSet<>(teacher.getCourses());
-//        Set<Course> coursesToAdd = new HashSet<>((Collection<Course>) courseRepository.findAllById(teacherDto.courseIds()));
-//
-//        coursesToRemove.removeAll(coursesToAdd); // Identify courses to remove
-//        coursesToAdd.removeAll(teacher.getCourses()); // Identify courses to add
-//
-//        //Remove courses using the correct method
-//        coursesToRemove.forEach(course -> {
-//            teacher.getCourses().remove(course);
-//            course.setTeacher(null); //Ensure the bi-directional relationship is removed
-//        });
-//
-//        //Add new courses
-//        coursesToAdd.forEach(course -> {
-//            teacher.getCourses().add(course);
-//            course.setTeacher(teacher); //Ensure the bi-directional relationship is added
-//        });
+        // Update courses TODO update teacher course
+        Set<Course> currentCourses = new HashSet<>(teacher.getCourses());
+        Set<Course> newCourses = new HashSet<>((Collection<Course>) courseRepository.findAllById(teacherDto.courseIds()));
+        currentCourses.stream()
+                .filter(course -> !newCourses.contains(course))
+                .forEach(course -> {
+                    teacher.getCourses().remove(course);
+                    course.setTeacher(null);
+                });
+        newCourses.stream()
+                .filter(course -> !currentCourses.contains(course))
+                .forEach(course -> {
+                    teacher.getCourses().add(course);
+                    course.setTeacher(teacher);
+                });
 
         return TeacherDto.convertToDto(teacherRepository.save(teacher));
     }

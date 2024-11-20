@@ -28,6 +28,7 @@ public class SemesterServiceImpl implements ISemesterService {
         return SemesterDto.convertToDto(semesterRepository.findById(id).orElseThrow());
     }
 
+    @Override
     public SemesterDto addSemester(SemesterDto semesterDto) {
         if (semesterRepository.findByName(semesterDto.name()).isPresent()) {
             throw new IllegalArgumentException("A semester with the name " + semesterDto.name() + " already exists.");
@@ -39,6 +40,7 @@ public class SemesterServiceImpl implements ISemesterService {
         return SemesterDto.convertToDto(semesterRepository.save(semester));
     }
 
+    @Override
     public void deleteSemester(long id) {
         semesterRepository.findById(id).ifPresent(semesterRepository::delete);
     }

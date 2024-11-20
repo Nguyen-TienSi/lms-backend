@@ -48,7 +48,7 @@ public class SubmissionServiceImpl implements ISubmissionService {
 
     @Override
     public SubmissionDto createSubmission(SubmissionDto submissionDto) {
-        // TODO create submission
+        // TODO create file submission
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Submission submission = new Submission();
         if (authentication != null && authentication.getPrincipal() instanceof Student student) {

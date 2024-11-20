@@ -8,5 +8,4 @@ import java.util.Set;
 
 @NoArgsConstructor
 @Entity
-@Table
 public class Admin extends User {}

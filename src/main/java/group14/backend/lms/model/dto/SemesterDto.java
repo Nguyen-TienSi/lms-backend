@@ -3,14 +3,14 @@ package group14.backend.lms.model.dto;
 import group14.backend.lms.model.entity.Semester;
 import lombok.Builder;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Builder
 public record SemesterDto(
         long id,
         String name,
-        LocalDateTime startDate,
-        LocalDateTime endDate
+        LocalDate startDate,
+        LocalDate endDate
 ) {
     public static SemesterDto convertToDto(Semester semester) {
         return SemesterDto.builder()

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -59,6 +60,8 @@ public class DataInitializerServiceImpl implements IDataInitializerService {
         for (int i = 1; i <= 5; i++) {
             Semester semester = new Semester();
             semester.setName("Semester " + i);
+            semester.setStartDate(LocalDate.now());
+            semester.setEndDate(LocalDate.now().plusDays(i));
             if (semesterRepository.findByName(semester.getName()).isEmpty()) {
                 semesterRepository.save(semester);
             }

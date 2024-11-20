@@ -12,7 +12,6 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table
 public class Assignment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

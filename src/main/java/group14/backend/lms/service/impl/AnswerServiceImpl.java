@@ -19,8 +19,8 @@ public class AnswerServiceImpl implements IAnswerService {
     private final IQuestionRepository questionRepository;
 
     @Override
-    public List<AnswerDto> getAnswerByQuestionId(int questionId) {
-        List<Answer> answerList = answerRepository.findAnswerByQuestionId(questionId);
+    public List<AnswerDto> getAnswerByAssignmentId(int assignmentId) {
+        List<Answer> answerList = answerRepository.findAnswersByAssignmentId(assignmentId);
         return answerList.stream()
                 .map(AnswerDto::convertToDto)
                 .collect(Collectors.toList());

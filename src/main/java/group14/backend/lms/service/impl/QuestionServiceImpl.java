@@ -7,7 +7,6 @@ import group14.backend.lms.repository.IAnswerRepository;
 import group14.backend.lms.repository.IAssignmentRepository;
 import group14.backend.lms.repository.IQuestionRepository;
 import group14.backend.lms.service.IQuestionService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

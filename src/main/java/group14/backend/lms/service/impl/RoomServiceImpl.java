@@ -1,6 +1,5 @@
 package group14.backend.lms.service.impl;
 
-import group14.backend.lms.model.entity.Attendance;
 import group14.backend.lms.model.entity.Course;
 import group14.backend.lms.model.entity.Room;
 import group14.backend.lms.model.dto.RoomDto;
@@ -8,15 +7,12 @@ import group14.backend.lms.repository.IAttendanceRepository;
 import group14.backend.lms.repository.ICourseRepository;
 import group14.backend.lms.repository.IRoomRepository;
 import group14.backend.lms.service.IRoomService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

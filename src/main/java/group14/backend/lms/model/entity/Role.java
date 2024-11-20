@@ -10,7 +10,6 @@ import org.springframework.security.core.GrantedAuthority;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table
 public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

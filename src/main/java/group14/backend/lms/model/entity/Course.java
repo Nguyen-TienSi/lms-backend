@@ -10,13 +10,12 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "class_fk", referencedColumnName = "id")
     private Class aClass;
 

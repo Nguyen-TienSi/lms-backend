@@ -42,7 +42,7 @@ public class StudentServiceImpl implements IStudentService {
         student.setUsername(studentDto.userDto().username());
         student.setPassword(passwordEncoder.encode("password"));
         student.setAClass(classRepository.findById(studentDto.classId()).orElseThrow());
-        student.setAuthorities(roleRepository.findByAuthority(studentDto.userDto().role())
+        student.setAuthorities(roleRepository.findByAuthority("ROLE_STUDENT")
                 .stream()
                 .collect(Collectors.toSet())
         );

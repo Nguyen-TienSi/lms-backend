@@ -11,7 +11,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table
 public class Teacher extends User {
     //    @JsonIgnoreProperties("teachers")
     @JsonIgnore

@@ -12,7 +12,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table
 public class Student extends User {
     @ManyToOne
     @JoinColumn(name = "class_fk", referencedColumnName = "id")

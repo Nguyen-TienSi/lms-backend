@@ -13,8 +13,8 @@ public class AnswerController {
     private IAnswerService answerService;
 
     @GetMapping("/assignment/{assignmentId}")
-    public ResponseEntity<?> getAnswerByQuestionId(@PathVariable int assignmentId) {
-        return ResponseEntity.ok(answerService.getAnswerByQuestionId(assignmentId));
+    public ResponseEntity<?> getAnswerByAssignmentId(@PathVariable int assignmentId) {
+        return ResponseEntity.ok(answerService.getAnswerByAssignmentId(assignmentId));
     }
 
     @PutMapping("/update/{answerId}")

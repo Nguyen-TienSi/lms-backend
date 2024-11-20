@@ -10,7 +10,6 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table
 public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
