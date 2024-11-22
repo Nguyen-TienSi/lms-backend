@@ -26,9 +26,9 @@ public class DataInitializerServiceImpl implements IDataInitializerService {
     @Override
     public void init() {
         createUsers();
-        createSemesters();
-        createClasses();
-        createSubjects();
+//        createSemesters();
+//        createClasses();
+//        createSubjects();
     }
 
     public void createUsers() {
@@ -41,18 +41,18 @@ public class DataInitializerServiceImpl implements IDataInitializerService {
                 "admin1@example.com",
                 "ROLE_ADMIN"
         );
-        for (int i = 1; i <= 5; i++) {
-            createUserIfNotExist(
-                    "Student", String.valueOf(i),
-                    "student" + i + "@example.com",
-                    "ROLE_STUDENT"
-            );
-            createUserIfNotExist(
-                    "Teacher", String.valueOf(i),
-                    "teacher" + i + "@example.com",
-                    "ROLE_TEACHER"
-            );
-        }
+//        for (int i = 1; i <= 5; i++) {
+//            createUserIfNotExist(
+//                    "Student", String.valueOf(i),
+//                    "student" + i + "@example.com",
+//                    "ROLE_STUDENT"
+//            );
+//            createUserIfNotExist(
+//                    "Teacher", String.valueOf(i),
+//                    "teacher" + i + "@example.com",
+//                    "ROLE_TEACHER"
+//            );
+//        }
     }
 
     @Override

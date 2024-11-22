@@ -24,7 +24,7 @@ public record CourseDto(
         return CourseDto.builder()
                 .id(course.getId())
                 .classId(course.getAClass().getId())
-                .subjectId(course.getTeacher().getId())
+                .subjectId(course.getSubject().getId())
                 .teacherId(course.getTeacher().getId())
                 .semesterId(course.getSemester().getId())
                 .studentIds(course.getStudents().stream()

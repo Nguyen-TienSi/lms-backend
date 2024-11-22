@@ -56,13 +56,14 @@ public class CourseServiceImpl implements ICourseService {
         course.setAClass(classRepository.findById(courseDto.classId()).orElseThrow());
         course.setSubject(subjectRepository.findById(courseDto.subjectId()).orElseThrow());
         course.setSemester(semesterRepository.findById(courseDto.semesterId()).orElseThrow());
+
         Teacher teacher = teacherRepository.findById(courseDto.teacherId()).orElseThrow();
         course.setTeacher(teacher);
+        teacher.getCourses().add(course);
 
         Set<Student> students = new HashSet<>((Collection<Student>) studentRepository.findAllById(courseDto.studentIds()));
         students.forEach(student -> student.getCourses().add(course));
         course.setStudents(students);
-        teacher.getCourses().add(course);
 
         return CourseDto.convertToDto(courseRepository.save(course));
     }
